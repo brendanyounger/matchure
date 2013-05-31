@@ -1,9 +1,8 @@
 (ns matchure
   (:use matchure.compile))
 
-
 (defmacro if-match
-  ([matches true-case] 
+  ([matches true-case]
      (compile-top-level-match matches true-case nil))
   ([matches true-case false-case]
      (compile-top-level-match matches true-case false-case)))
@@ -22,7 +21,7 @@
       (with-gensyms [whatn]
         (let [[what & patterns] patterns
               wrapped-patterns (apply concat
-                                      (map (fn [[a b]] 
+                                      (map (fn [[a b]]
                                              [(if (= true a) a [a whatn]) b])
                                            (partition 2 patterns)))]
           `(let [~whatn ~what]
@@ -154,5 +153,3 @@ Example:
                 forms)]
       `(def ~(with-meta name m) (fn-match ~@forms))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-

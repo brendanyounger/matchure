@@ -10,13 +10,16 @@
     `(let [~names ~syms]
        ~@code)))
 
-(defn variable-binding? "Decide whether the given thing is a directive to bind a variable"
+(defn variable-binding?
+  "Decide whether the given thing is a directive to bind a variable"
   [v]
   (and (symbol? v)
        (= \? (.charAt (name v) 0))
        (< 1 (count (name v)))))
 
-(defn bound-variable-name "Returns the name of the variable to bind to. I.e. the bound-variable-name of '?foo is 'foo." [v]
+(defn bound-variable-name
+  "Returns the name of the variable to bind to. I.e. the bound-variable-name of '?foo is 'foo."
+  [v]
   (assert (variable-binding? v))
   (let [var-name (name v)
         name-rest (.substring var-name 1 (.length var-name))]
@@ -90,7 +93,7 @@ functions the current state with the original success/failure behavior restored 
 in a submatch."
   [state & key-wrappers]
   (let [original-results (select-keys state [:success :failure])]
-    (loop [state state, key-wrappers key-wrappers]
+    (loop [state state key-wrappers key-wrappers]
       (if (empty? key-wrappers)
         state
         (let [[key wrapper & remaining] key-wrappers]
@@ -103,7 +106,6 @@ in a submatch."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Pattern match compilation
 (declare compile-pattern)
-
 
 (defn compile-matches "Compiles a list of pattern, match pairs into a block of code. If the first match fails
 the following match functions are never evaluated. "
